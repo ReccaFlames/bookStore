@@ -1,5 +1,7 @@
-package com.bookstore.book;
+package com.bookstore.controller;
 
+import com.bookstore.book.Book;
+import com.bookstore.book.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
