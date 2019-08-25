@@ -3,6 +3,7 @@ package com.bookstore.controller;
 import com.bookstore.config.JwtTokenUtil;
 import com.bookstore.model.JwtRequest;
 import com.bookstore.model.JwtResponse;
+import com.bookstore.model.UserDTO;
 import com.bookstore.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,11 @@ public class JwtAuthenticationController {
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponse(token));
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) {
+        return ResponseEntity.ok(userDetailsService.save(user));
     }
 
     private void authenticate(String username, String password) throws Exception {
