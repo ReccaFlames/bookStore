@@ -1,32 +1,16 @@
 package com.bookstore.book;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
-@ToString
-@Entity
-@NoArgsConstructor
-public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+@AllArgsConstructor
+public class Book implements Serializable {
     private String title;
-
-    public Book(String title) {
-        this.title = title;
-    }
-
-    public Book(int id, String title) {
-        this.id = id;
-        this.title = title;
-    }
+    private List<String> authors;
 }

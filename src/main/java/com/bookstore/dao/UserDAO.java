@@ -1,12 +1,14 @@
 package com.bookstore.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@EqualsAndHashCode
 @Table(name = "user")
 public class UserDAO {
 
