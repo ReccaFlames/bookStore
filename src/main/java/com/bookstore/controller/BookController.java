@@ -5,6 +5,10 @@ import com.bookstore.author.AuthorsRepository;
 import com.bookstore.book.Book;
 import com.bookstore.book.BookDAO;
 import com.bookstore.book.BooksRepository;
+import com.bookstore.publisher.BookPublisherDAO;
+import com.bookstore.publisher.BookPublishersRepository;
+import com.bookstore.publisher.PublisherDAO;
+import com.bookstore.publisher.PublisherRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,12 @@ public class BookController {
     @Autowired
     AuthorsRepository authorsRepository;
 
+    @Autowired
+    BookPublishersRepository bookPublishersRepository;
+
+    @Autowired
+    PublisherRepository publisherRepository;
+
     @GetMapping("books")
     public List<BookDAO> book() {
         return booksRepository.findAll();
@@ -35,9 +45,19 @@ public class BookController {
                 .map(this::createAuthor)
                 .collect(Collectors.toCollection(HashSet::new));
 
-        BookDAO book = new BookDAO(title, authors);
+        Set<BookPublisherDAO> publishers = body.getPublishers().stream()
+                .map(this::createBookPublisher)
+                .collect(Collectors.toSet());
+
+        BookDAO book = new BookDAO(title, authors, publishers);
 
         return booksRepository.save(book);
+    }
+
+    private BookPublisherDAO createBookPublisher(String name) {
+        PublisherDAO existingPublisher = publisherRepository.findByName(name);
+        PublisherDAO publisher = existingPublisher != null ? existingPublisher : new PublisherDAO(name);
+        return new BookPublisherDAO(publisher);
     }
 
     private AuthorDAO createAuthor(String author) {

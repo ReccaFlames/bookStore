@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,11 +18,17 @@ import java.util.Set;
 public class AuthorDAO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long author_id;
+    @Column(name = "author_id", nullable = false)
+    private long authorId;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "surname", nullable = false)
     private String surname;
+    private String country;
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+    @Column(name = "short_bio")
+    private String shortBio;
     @ManyToMany(mappedBy = "authors")
     @JsonIgnoreProperties("authors")
     private Set<BookDAO> books = new HashSet<>();

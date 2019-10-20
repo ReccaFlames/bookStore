@@ -1,4 +1,4 @@
-package com.bookstore.book;
+package com.bookstore.categories;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,17 +6,14 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @Entity
-@Table(name = "book_dimensions")
-public class DimensionsDAO {
+@Table(name = "categories")
+public class CategoriesDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long bookId;
-    private int height;
-    private int width;
-    private int thickness;
+    private String category;
 }
