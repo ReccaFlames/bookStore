@@ -1,5 +1,6 @@
 package com.bookstore.controller;
 
+import com.bookstore.author.Author;
 import com.bookstore.author.AuthorDAO;
 import com.bookstore.author.AuthorsRepository;
 import com.bookstore.book.Book;
@@ -10,7 +11,6 @@ import com.bookstore.categories.CategoriesRepository;
 import com.bookstore.publisher.BookPublisherDAO;
 import com.bookstore.publisher.PublisherDAO;
 import com.bookstore.publisher.PublisherRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -72,12 +72,11 @@ public class BookController {
         return bookPublisherDAO;
     }
 
-    private AuthorDAO createAuthor(String author) {
-        String[] nameAndSurname = StringUtils.split(author, " ");
-        String name = nameAndSurname[0];
-        String surname = nameAndSurname[1];
+    private AuthorDAO createAuthor(Author author) {
+        String name = author.getName();
+        String surname = author.getSurname();
         AuthorDAO existingAuthor = authorsRepository.findAuthorDAOByNameAndSurname(name, surname);
-        return existingAuthor != null ? existingAuthor : new AuthorDAO(name, surname);
+        return existingAuthor != null ? existingAuthor : new AuthorDAO(name, surname, author.getCountry(), author.getDateOfBirth());
     }
 
     @DeleteMapping("books/{id}")

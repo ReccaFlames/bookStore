@@ -1,5 +1,6 @@
 package com.bookstore.book;
 
+import com.bookstore.author.Author;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Book implements Serializable {
     private String title;
-    private List<String> authors;
+    private List<Author> authors;
     private List<String> publishers;
     private List<String> categories;
 }
