@@ -5,7 +5,6 @@ import com.bookstore.publisher.BookPublisherDAO;
 import com.bookstore.publisher.BookPublishersRepository;
 import com.bookstore.publisher.PublisherDAO;
 import com.bookstore.publisher.PublisherRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,11 +14,13 @@ import java.util.stream.Collectors;
 @RestController
 public class BookPublisherController {
 
-    @Autowired
     private BookPublishersRepository bookPublishersRepository;
-
-    @Autowired
     private PublisherRepository publisherRepository;
+
+    public BookPublisherController(BookPublishersRepository bookPublishersRepository, PublisherRepository publisherRepository) {
+        this.bookPublishersRepository = bookPublishersRepository;
+        this.publisherRepository = publisherRepository;
+    }
 
     @GetMapping("bookPublisher")
     public List<BookPublisherDAO> bookPublishers() {
@@ -28,7 +29,7 @@ public class BookPublisherController {
 
     @GetMapping("bookPublisher/{id}")
     public BookPublisherDAO bookPublisher(@PathVariable String id) {
-        return bookPublishersRepository.findBookPublisherDAOById(Long.parseLong(id));
+        return bookPublishersRepository.findBookPublisherDAOByBookPublisherId(Long.parseLong(id));
     }
 
     @PostMapping("bookPublisher")
@@ -45,6 +46,8 @@ public class BookPublisherController {
     }
 
     private BookPublisherDAO createBookPublisher(String name) {
-        return new BookPublisherDAO(new PublisherDAO(name));
+        PublisherDAO existingPublisher = publisherRepository.findByName(name);
+        PublisherDAO publisher = existingPublisher != null ? existingPublisher : new PublisherDAO(name);
+        return new BookPublisherDAO(publisher);
     }
 }

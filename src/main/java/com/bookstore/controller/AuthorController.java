@@ -2,7 +2,6 @@ package com.bookstore.controller;
 
 import com.bookstore.author.AuthorDAO;
 import com.bookstore.author.AuthorsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,8 +9,11 @@ import java.util.List;
 @RestController
 public class AuthorController {
 
-    @Autowired
-    AuthorsRepository authorsRepository;
+    private AuthorsRepository authorsRepository;
+
+    public AuthorController(AuthorsRepository authorsRepository) {
+        this.authorsRepository = authorsRepository;
+    }
 
     @GetMapping("authors")
     public List<AuthorDAO> authors() {

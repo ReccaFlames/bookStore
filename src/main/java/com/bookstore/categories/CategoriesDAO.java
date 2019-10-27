@@ -1,19 +1,32 @@
 package com.bookstore.categories;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.bookstore.book.BookDAO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-@Setter
-@Getter
-@AllArgsConstructor
 @Entity
-@Table(name = "categories")
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(exclude = "book")
+@Table(name = "categories", uniqueConstraints = {@UniqueConstraint(columnNames = {"category"})})
 public class CategoriesDAO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private long id;
     private String category;
+
+    @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
+    private Set<BookDAO> books = new HashSet<>();
+
+    public CategoriesDAO(String category) {
+        this.category = category;
+    }
 }

@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookPublishersRepository extends JpaRepository<BookPublisherDAO, Integer> {
-    BookPublisherDAO findBookPublisherDAOById(Long integer);
+    BookPublisherDAO findBookPublisherDAOByBookPublisherId(Long integer);
 }

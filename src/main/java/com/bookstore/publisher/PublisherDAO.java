@@ -16,11 +16,13 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = "bookPublishers")
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class PublisherDAO implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "publisher_id")
+    @Column(name = "publisher_id", updatable = false, nullable = false)
     private long id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "publisher", orphanRemoval = true)

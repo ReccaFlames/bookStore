@@ -14,16 +14,14 @@ import java.time.LocalDate;
 @Entity
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"publisher"})
+@EqualsAndHashCode
 @Table(name = "book_publisher")
 public class BookPublisherDAO implements Serializable {
 
-//  @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
     @Id
-    @Column(name = "book_publisher_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "book_publisher_id", updatable = false, nullable = false)
+    private long bookPublisherId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
@@ -32,7 +30,7 @@ public class BookPublisherDAO implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "bookPublishers"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "bookPublishers", "id"})
     private PublisherDAO publisher;
 
     private LocalDate publishedDate;

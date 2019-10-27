@@ -5,12 +5,12 @@ import com.bookstore.author.AuthorsRepository;
 import com.bookstore.book.Book;
 import com.bookstore.book.BookDAO;
 import com.bookstore.book.BooksRepository;
+import com.bookstore.categories.CategoriesDAO;
+import com.bookstore.categories.CategoriesRepository;
 import com.bookstore.publisher.BookPublisherDAO;
-import com.bookstore.publisher.BookPublishersRepository;
 import com.bookstore.publisher.PublisherDAO;
 import com.bookstore.publisher.PublisherRepository;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -21,17 +21,18 @@ import java.util.stream.Collectors;
 @RestController
 public class BookController {
 
-    @Autowired
-    BooksRepository booksRepository;
+    private BooksRepository booksRepository;
+    private AuthorsRepository authorsRepository;
+    private PublisherRepository publisherRepository;
+    private CategoriesRepository categoriesRepository;
 
-    @Autowired
-    AuthorsRepository authorsRepository;
-
-    @Autowired
-    BookPublishersRepository bookPublishersRepository;
-
-    @Autowired
-    PublisherRepository publisherRepository;
+    public BookController(BooksRepository booksRepository, AuthorsRepository authorsRepository,
+                          PublisherRepository publisherRepository, CategoriesRepository categoriesRepository) {
+        this.booksRepository = booksRepository;
+        this.authorsRepository = authorsRepository;
+        this.publisherRepository = publisherRepository;
+        this.categoriesRepository = categoriesRepository;
+    }
 
     @GetMapping("books")
     public List<BookDAO> book() {
@@ -47,17 +48,28 @@ public class BookController {
 
         Set<BookPublisherDAO> publishers = body.getPublishers().stream()
                 .map(this::createBookPublisher)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(HashSet::new));
 
-        BookDAO book = new BookDAO(title, authors, publishers);
+        Set<CategoriesDAO> categories = body.getCategories().stream()
+                .map(this::createCategory)
+                .collect(Collectors.toCollection(HashSet::new));
+
+        BookDAO book = new BookDAO(title, authors, publishers, categories);
 
         return booksRepository.save(book);
+    }
+
+    private CategoriesDAO createCategory(String name) {
+        CategoriesDAO existingCategory = categoriesRepository.findCategoriesDAOByCategory(name);
+        return existingCategory != null ? existingCategory : new CategoriesDAO(name);
     }
 
     private BookPublisherDAO createBookPublisher(String name) {
         PublisherDAO existingPublisher = publisherRepository.findByName(name);
         PublisherDAO publisher = existingPublisher != null ? existingPublisher : new PublisherDAO(name);
-        return new BookPublisherDAO(publisher);
+        BookPublisherDAO bookPublisherDAO = new BookPublisherDAO(publisher);
+
+        return bookPublisherDAO;
     }
 
     private AuthorDAO createAuthor(String author) {
