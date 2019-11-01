@@ -1,7 +1,7 @@
 package com.bookstore.service;
 
-import com.bookstore.dao.UserDAO;
-import com.bookstore.dao.UserRepository;
+import com.bookstore.user.UserDAO;
+import com.bookstore.user.UserRepository;
 import com.bookstore.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;

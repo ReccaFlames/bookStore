@@ -13,7 +13,7 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "book")
+@EqualsAndHashCode()
 @Table(name = "categories", uniqueConstraints = {@UniqueConstraint(columnNames = {"category"})})
 public class CategoriesDAO {
     @Id

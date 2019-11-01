@@ -13,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Book implements Serializable {
     private String title;
+    private String shortDescription;
+    private Integer pageCount;
     private List<Author> authors;
     private List<String> publishers;
     private List<String> categories;

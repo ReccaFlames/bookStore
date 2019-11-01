@@ -1,10 +1,7 @@
 package com.bookstore.controller;
 
 import com.bookstore.book.Book;
-import com.bookstore.publisher.BookPublisherDAO;
-import com.bookstore.publisher.BookPublishersRepository;
-import com.bookstore.publisher.PublisherDAO;
-import com.bookstore.publisher.PublisherRepository;
+import com.bookstore.publisher.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

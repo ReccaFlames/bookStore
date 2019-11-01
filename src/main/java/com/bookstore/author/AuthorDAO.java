@@ -33,11 +33,6 @@ public class AuthorDAO implements Serializable {
     @JsonIgnoreProperties("authors")
     private Set<BookDAO> books = new HashSet<>();
 
-    public AuthorDAO(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
-    }
-
     public AuthorDAO(String name, String surname, String country, LocalDate dateOfBirth) {
         this.name = name;
         this.surname = surname;

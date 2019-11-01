@@ -1,4 +1,4 @@
-package com.bookstore.dao;
+package com.bookstore.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;

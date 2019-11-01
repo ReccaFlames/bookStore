@@ -1,4 +1,4 @@
-package com.bookstore.dao;
+package com.bookstore.user;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
