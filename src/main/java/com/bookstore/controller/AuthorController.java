@@ -26,9 +26,8 @@ public class AuthorController {
     }
 
     @GetMapping("authors/{id}")
-    public AuthorDAO getAuthor(@PathVariable("id") String id) {
-        long authorId = Long.parseLong(id);
-        return authorsRepository.findAuthorDAOByAuthorId(authorId);
+    public AuthorDAO getAuthor(@PathVariable("id") Long id) {
+        return authorsRepository.findAuthorDAOByAuthorId(id);
     }
 
     @GetMapping("authors/{lastName}")

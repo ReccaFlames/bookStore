@@ -20,6 +20,8 @@
         <commons-lang3.version>3.9</commons-lang3.version>
         <springfox-swagger.version>2.9.2</springfox-swagger.version>
         <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
+        <junit.version>4.12</junit.version>
+        <mockito.version>1.9.5</mockito.version>
     </properties>
 
     <dependencies>
@@ -79,6 +81,18 @@
             <artifactId>json-path</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
 <!--        Compile Scope -->
         <dependency>
             <groupId>io.springfox</groupId>
@@ -119,15 +133,6 @@
                     <encoding>UTF-8</encoding>
                     <skip>false</skip>
                     <verbose>false</verbose>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>

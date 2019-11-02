@@ -29,17 +29,17 @@ public class BookPublisherController {
         return bookPublishersRepository.findBookPublisherDAOByBookPublisherId(Long.parseLong(id));
     }
 
+    @GetMapping("publisher")
+    public List<PublisherDAO> publishers() {
+        return publisherRepository.findAll();
+    }
+
     @PostMapping("bookPublisher")
     public List<BookPublisherDAO> create(@RequestBody Book body) {
         Set<BookPublisherDAO> publishers = body.getPublishers().stream()
                 .map(this::createBookPublisher)
                 .collect(Collectors.toSet());
         return bookPublishersRepository.saveAll(publishers);
-    }
-
-    @GetMapping("publisher")
-    public List<PublisherDAO> publishers() {
-        return publisherRepository.findAll();
     }
 
     private BookPublisherDAO createBookPublisher(String name) {
