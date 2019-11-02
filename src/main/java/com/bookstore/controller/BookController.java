@@ -25,12 +25,12 @@ import java.util.stream.Collectors;
 @RestController
 public class BookController {
 
-    private BooksRepository booksRepository;
-    private AuthorsRepository authorsRepository;
-    private PublisherRepository publisherRepository;
-    private CategoriesRepository categoriesRepository;
-    private AuthorMapper authorMapper = Mappers.getMapper(AuthorMapper.class);
-    private BookMapper bookMapper = Mappers.getMapper(BookMapper.class);
+    private static final AuthorMapper authorMapper = Mappers.getMapper(AuthorMapper.class);
+    private static final BookMapper bookMapper = Mappers.getMapper(BookMapper.class);
+    private final BooksRepository booksRepository;
+    private final AuthorsRepository authorsRepository;
+    private final PublisherRepository publisherRepository;
+    private final CategoriesRepository categoriesRepository;
 
     public BookController(BooksRepository booksRepository, AuthorsRepository authorsRepository,
                           PublisherRepository publisherRepository, CategoriesRepository categoriesRepository) {
@@ -40,6 +40,13 @@ public class BookController {
         this.categoriesRepository = categoriesRepository;
     }
 
+    @DeleteMapping("books/{id}")
+    public boolean delete(@PathVariable String id) {
+        long bookId = Long.parseLong(id);
+        booksRepository.deleteByBookId(bookId);
+        return true;
+    }
+
     @GetMapping("books")
     public List<BookDAO> book() {
         return booksRepository.findAll();
@@ -47,24 +54,30 @@ public class BookController {
 
     @PostMapping("books")
     public BookDAO create(@RequestBody Book body) {
-        Set<AuthorDAO> authors = body.getAuthors().stream()
+        BookDAO bookDAO = createBook(body);
+
+        return booksRepository.save(bookDAO);
+    }
+
+    private BookDAO createBook(Book book) {
+        Set<AuthorDAO> authors = book.getAuthors().stream()
                 .map(this::createAuthor)
                 .collect(Collectors.toCollection(HashSet::new));
 
-        Set<BookPublisherDAO> publishers = body.getPublishers().stream()
+        Set<BookPublisherDAO> publishers = book.getPublishers().stream()
                 .map(this::createBookPublisher)
                 .collect(Collectors.toCollection(HashSet::new));
 
-        Set<CategoriesDAO> categories = body.getCategories().stream()
+        Set<CategoriesDAO> categories = book.getCategories().stream()
                 .map(this::createCategory)
                 .collect(Collectors.toCollection(HashSet::new));
 
-        BookDAO mappedBook = bookMapper.mapBook(body);
-        mappedBook.setAuthors(authors);
-        mappedBook.setBookPublishers(publishers);
-        mappedBook.setCategories(categories);
+        BookDAO bookDAO = bookMapper.mapBook(book);
+        bookDAO.setAuthors(authors);
+        bookDAO.setBookPublishers(publishers);
+        bookDAO.setCategories(categories);
 
-        return booksRepository.save(mappedBook);
+        return bookDAO;
     }
 
     private CategoriesDAO createCategory(String name) {
@@ -82,12 +95,5 @@ public class BookController {
     private AuthorDAO createAuthor(Author author) {
         AuthorDAO existingAuthor = authorsRepository.findAuthorDAOByNameAndSurname(author.getName(), author.getSurname());
         return Objects.isNull(existingAuthor) ? authorMapper.createAuthor(author) : existingAuthor;
-    }
-
-    @DeleteMapping("books/{id}")
-    public boolean delete(@PathVariable String id) {
-        long bookId = Long.parseLong(id);
-        booksRepository.deleteByBookId(bookId);
-        return true;
     }
 }

@@ -19,6 +19,7 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"authors", "bookPublishers", "categories"})
 @Table(name = "book")
 public class BookDAO implements Serializable {
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "book_author",
@@ -27,14 +28,18 @@ public class BookDAO implements Serializable {
     )
     @JsonIgnoreProperties({"books", "authorId"})
     Set<AuthorDAO> authors = new HashSet<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "book_id")
     private long bookId;
+
     @Column(nullable = false)
     private String title;
+
     @Column(name = "short_description")
     private String shortDescription;
+
     @Column(name = "page_count")
     private String pageCount;
 
@@ -51,33 +56,6 @@ public class BookDAO implements Serializable {
     @JsonIgnoreProperties({"book", "id"})
     private Set<CategoriesDAO> categories = new HashSet<>();
 
-    public BookDAO(String title) {
-        this.title = title;
-    }
-
-    public BookDAO(String title, Set<AuthorDAO> authors) {
-        this.title = title;
-        this.authors = authors;
-        this.authors.forEach(author -> author.getBooks().add(this));
-    }
-
-    public BookDAO(String title, Set<AuthorDAO> authors, Set<BookPublisherDAO> bookPublishers) {
-        this.authors = authors;
-        this.title = title;
-        this.authors.forEach(author -> author.getBooks().add(this));
-        this.bookPublishers = bookPublishers;
-        this.bookPublishers.forEach(bookPublisher -> bookPublisher.setBook(this));
-    }
-
-    public BookDAO(String title, Set<AuthorDAO> authors, Set<BookPublisherDAO> bookPublishers, Set<CategoriesDAO> categories) {
-        this.authors = authors;
-        this.title = title;
-        this.authors.forEach(author -> author.getBooks().add(this));
-        this.bookPublishers = bookPublishers;
-        this.bookPublishers.forEach(bookPublisher -> bookPublisher.setBook(this));
-        this.categories = categories;
-        this.categories.forEach(category -> category.getBooks().add(this));
-    }
 }
 
 

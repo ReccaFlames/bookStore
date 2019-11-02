@@ -16,6 +16,7 @@ import java.util.Set;
 @EqualsAndHashCode()
 @Table(name = "categories", uniqueConstraints = {@UniqueConstraint(columnNames = {"category"})})
 public class CategoriesDAO {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")

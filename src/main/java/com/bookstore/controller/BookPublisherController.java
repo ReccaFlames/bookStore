@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 @RestController
 public class BookPublisherController {
 
-    private BookPublishersRepository bookPublishersRepository;
-    private PublisherRepository publisherRepository;
+    private final BookPublishersRepository bookPublishersRepository;
+    private final PublisherRepository publisherRepository;
 
     public BookPublisherController(BookPublishersRepository bookPublishersRepository, PublisherRepository publisherRepository) {
         this.bookPublishersRepository = bookPublishersRepository;
