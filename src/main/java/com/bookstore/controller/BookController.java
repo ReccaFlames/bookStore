@@ -14,6 +14,7 @@ import com.bookstore.publisher.BookPublisherDAO;
 import com.bookstore.publisher.PublisherDAO;
 import com.bookstore.publisher.PublisherRepository;
 import org.mapstruct.factory.Mappers;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -41,10 +42,9 @@ public class BookController {
     }
 
     @DeleteMapping("books/{id}")
-    public boolean delete(@PathVariable String id) {
-        long bookId = Long.parseLong(id);
-        booksRepository.deleteByBookId(bookId);
-        return true;
+    public ResponseEntity delete(@PathVariable Long id) {
+        booksRepository.deleteByBookId(id);
+        return ResponseEntity.ok(true);
     }
 
     @GetMapping("books")
