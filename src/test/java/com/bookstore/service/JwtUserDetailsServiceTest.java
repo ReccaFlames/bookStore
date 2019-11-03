@@ -3,11 +3,11 @@ package com.bookstore.service;
 import com.bookstore.model.UserDTO;
 import com.bookstore.user.UserDAO;
 import com.bookstore.user.UserRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,8 +18,8 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class JwtUserDetailsServiceTest {
+@ExtendWith(MockitoExtension.class)
+class JwtUserDetailsServiceTest {
 
     private static final String USER_NAME = "user";
     private static final String UNKNOWN_USER = "unknownUser";
@@ -43,7 +43,7 @@ public class JwtUserDetailsServiceTest {
     private JwtUserDetailsService userDetailsService;
 
     @Test
-    public void loadUserByName() {
+    void loadUserByName() {
         //given
         when(userRepository.findByUsername(anyString())).thenReturn(mockUserDAO);
         when(mockUserDAO.getUsername()).thenReturn(USER_NAME);
@@ -56,7 +56,7 @@ public class JwtUserDetailsServiceTest {
     }
 
     @Test
-    public void throwExceptionForUserNotFound() {
+    void throwExceptionForUserNotFound() {
         //given
         when(userRepository.findByUsername(anyString())).thenReturn(null);
         //when
@@ -71,7 +71,7 @@ public class JwtUserDetailsServiceTest {
     }
 
     @Test
-    public void saveUserInDB() {
+    void saveUserInDB() {
         //given
         when(mockUserDTO.getUsername()).thenReturn(USER_NAME);
         when(mockUserDTO.getPassword()).thenReturn(PASSWORD);

@@ -10,11 +10,11 @@ import com.bookstore.categories.CategoriesDAO;
 import com.bookstore.categories.CategoriesRepository;
 import com.bookstore.publisher.PublisherDAO;
 import com.bookstore.publisher.PublisherRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -24,12 +24,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
-public class BookControllerTest {
+@ExtendWith(MockitoExtension.class)
+class BookControllerTest {
 
     private final Book bookToSave = createBook();
 
@@ -53,9 +51,8 @@ public class BookControllerTest {
 
     private BookController bookController;
 
-    @Before
-    public void setUp() {
-        when(booksRepository.save(any(BookDAO.class))).thenReturn(mockBookDAO);
+    @BeforeEach
+    void setUp() {
         bookController = new BookController(
                 booksRepository,
                 authorsRepository,
@@ -77,7 +74,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void saveBookIntoRepositoryWithExistingElements() {
+    void saveBookIntoRepositoryWithExistingElements() {
         //given
         when(categoriesRepository.findCategoriesDAOByCategory(anyString())).thenReturn(mock(CategoriesDAO.class));
         when(publisherRepository.findByName(anyString())).thenReturn(mock(PublisherDAO.class));
@@ -89,7 +86,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void bookRemovedFromRepository() {
+    void bookRemovedFromRepository() {
         //given
         //when
         ResponseEntity response = bookController.delete(1L);
@@ -99,7 +96,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void getAllBooks() {
+    void getAllBooks() {
         //given
         when(booksRepository.findAll()).thenReturn(bookDAOS);
         //when

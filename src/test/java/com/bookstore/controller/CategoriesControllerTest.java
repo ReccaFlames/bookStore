@@ -2,11 +2,11 @@ package com.bookstore.controller;
 
 import com.bookstore.categories.CategoriesDAO;
 import com.bookstore.categories.CategoriesRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
@@ -14,8 +14,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CategoriesControllerTest {
+@ExtendWith(MockitoExtension.class)
+class CategoriesControllerTest {
 
     @Mock
     List<CategoriesDAO> mockedCategories;
@@ -25,13 +25,13 @@ public class CategoriesControllerTest {
 
     private CategoriesController categoriesController;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         categoriesController = new CategoriesController(categoriesRepository);
     }
 
     @Test
-    public void returnCategoriesList() {
+    void returnCategoriesList() {
         //given
         when(categoriesRepository.findAll()).thenReturn(mockedCategories);
         //when

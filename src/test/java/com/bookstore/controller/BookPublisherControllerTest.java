@@ -5,11 +5,11 @@ import com.bookstore.publisher.BookPublisherDAO;
 import com.bookstore.publisher.BookPublishersRepository;
 import com.bookstore.publisher.PublisherDAO;
 import com.bookstore.publisher.PublisherRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,8 +19,8 @@ import java.util.Set;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
-public class BookPublisherControllerTest {
+@ExtendWith(MockitoExtension.class)
+class BookPublisherControllerTest {
 
     @Mock
     private PublisherDAO mockPublisherDAO;
@@ -42,7 +42,7 @@ public class BookPublisherControllerTest {
 
     private BookPublisherController bookPublisherController;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         bookPublisherController = new BookPublisherController(bookPublishersRepository,
                 publisherRepository
@@ -50,7 +50,7 @@ public class BookPublisherControllerTest {
     }
 
     @Test
-    public void returnAllBookPublishers() {
+    void returnAllBookPublishers() {
         //given
         when(bookPublishersRepository.findAll()).thenReturn(mockBookPublisherDAOList);
         //when
@@ -60,7 +60,7 @@ public class BookPublisherControllerTest {
     }
 
     @Test
-    public void returnBookPublisherDAOForGivenID() {
+    void returnBookPublisherDAOForGivenID() {
         //given
         when(bookPublishersRepository.findBookPublisherDAOByBookPublisherId(anyLong())).thenReturn(mockBookPublisherDAO);
         //when
@@ -70,7 +70,7 @@ public class BookPublisherControllerTest {
     }
 
     @Test
-    public void returnAllPublishers() {
+    void returnAllPublishers() {
         //given
         when(publisherRepository.findAll()).thenReturn(mockPublisherDAOList);
         //when

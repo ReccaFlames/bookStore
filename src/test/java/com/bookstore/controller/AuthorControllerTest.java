@@ -3,21 +3,22 @@ package com.bookstore.controller;
 import com.bookstore.author.Author;
 import com.bookstore.author.AuthorDAO;
 import com.bookstore.author.AuthorsRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AuthorControllerTest {
+@ExtendWith(MockitoExtension.class)
+class AuthorControllerTest {
 
     private static final String LAST_NAME = "lastName";
     private static final String FIRST_NAME = "Name";
@@ -35,13 +36,13 @@ public class AuthorControllerTest {
 
     private AuthorController authorController;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         authorController = new AuthorController(authorsRepository);
     }
 
     @Test
-    public void returnAuthor() {
+    void returnAuthor() {
         //given
         when(authorsRepository.findAuthorDAOByAuthorId(anyLong())).thenReturn(mockedAuthorDAO);
         //when
@@ -51,7 +52,7 @@ public class AuthorControllerTest {
     }
 
     @Test
-    public void returnListOfAuthorsWithTheSameSurname() {
+    void returnListOfAuthorsWithTheSameSurname() {
         //given
         when(authorsRepository.findAuthorDAOSBySurname(LAST_NAME)).thenReturn(mockedAuthors);
         //when
@@ -61,7 +62,7 @@ public class AuthorControllerTest {
     }
 
     @Test
-    public void returnAuthorByName() {
+    void returnAuthorByName() {
         //given
         when(authorsRepository.findAuthorDAOByNameAndSurname(FIRST_NAME, LAST_NAME)).thenReturn(mockedAuthorDAO);
         //when
@@ -71,7 +72,7 @@ public class AuthorControllerTest {
     }
 
     @Test
-    public void returnPatchedAuthor() {
+    void returnPatchedAuthor() {
         //given
         when(authorsRepository.findAuthorDAOByNameAndSurname(FIRST_NAME, LAST_NAME)).thenReturn(mockedAuthorDAO);
         when(authorsRepository.save(any())).thenReturn(mockedAuthorDAO);
@@ -84,7 +85,7 @@ public class AuthorControllerTest {
     }
 
     @Test
-    public void patchReturnEmptyResponse() {
+    void patchReturnEmptyResponse() {
         //given
         when(authorsRepository.findAuthorDAOByNameAndSurname(FIRST_NAME, LAST_NAME)).thenReturn(null);
         //when

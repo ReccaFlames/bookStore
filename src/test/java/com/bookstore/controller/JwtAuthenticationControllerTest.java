@@ -6,36 +6,28 @@ import com.bookstore.model.JwtRequest;
 import com.bookstore.model.UserDTO;
 import com.bookstore.service.JwtUserDetailsService;
 import com.bookstore.user.UserDAO;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
-public class JwtAuthenticationControllerTest {
+@ExtendWith(MockitoExtension.class)
+class JwtAuthenticationControllerTest {
 
     private static final String USER_NAME = "user";
     private static final String PASSWORD = "password";
     private static final String USER_DISABLED_MESSAGE = "User " + USER_NAME + " is disabled";
     private static final String INVALID_CREDENTIALS_MESSAGE = "Provided username and password are invalid.";
-    private static final String TOKEN = "token";
 
     @Mock
     private JwtRequest mockAuthenticationRequest;
-
-    @Mock
-    private UserDetails mockUserDetails;
 
     @Mock
     private UserDTO mockUserDTO;
@@ -51,10 +43,8 @@ public class JwtAuthenticationControllerTest {
 
     private JwtAuthenticationController authenticationController;
 
-    @Before
-    public void setUp() {
-        when(mockAuthenticationRequest.getUsername()).thenReturn(USER_NAME);
-        when(mockAuthenticationRequest.getPassword()).thenReturn(PASSWORD);
+    @BeforeEach
+    void setUp() {
         authenticationController = new JwtAuthenticationController(
                 authenticationManager,
                 jwtTokenUtil,
@@ -63,10 +53,8 @@ public class JwtAuthenticationControllerTest {
     }
 
     @Test
-    public void createAuthenticationTokenForUser() throws Exception {
+    void createAuthenticationTokenForUser() throws Exception {
         //given
-        when(userDetailsService.loadUserByUsername(USER_NAME)).thenReturn(mockUserDetails);
-        when(jwtTokenUtil.generateToken(mockUserDetails)).thenReturn(TOKEN);
         //when
         ResponseEntity response = authenticationController.createAuthenticationToken(mockAuthenticationRequest);
         //then
@@ -75,9 +63,8 @@ public class JwtAuthenticationControllerTest {
     }
 
     @Test
-    public void handleBadCredentialsExceptionOnAuthenticate() {
+    void handleBadCredentialsExceptionOnAuthenticate() {
         //given
-        when(authenticationManager.authenticate(mock(Authentication.class))).thenThrow(new BadCredentialsException("INVALID_CREDENTIALS"));
         //when
         try {
             authenticationController.createAuthenticationToken(mockAuthenticationRequest);
@@ -90,9 +77,10 @@ public class JwtAuthenticationControllerTest {
     }
 
     @Test
-    public void handleDisabledExceptionOnAuthenticate() {
+    void handleDisabledExceptionOnAuthenticate() {
         //given
-        when(authenticationManager.authenticate(mock(Authentication.class))).thenThrow(new DisabledException("USER_DISABLED"));
+        when(mockAuthenticationRequest.getUsername()).thenReturn(USER_NAME);
+        when(mockAuthenticationRequest.getPassword()).thenReturn(PASSWORD);
         //when
         try {
             authenticationController.createAuthenticationToken(mockAuthenticationRequest);
@@ -105,7 +93,7 @@ public class JwtAuthenticationControllerTest {
     }
 
     @Test
-    public void saveUserInDB() {
+    void saveUserInDB() {
         //given
         when(userDetailsService.save(mockUserDTO)).thenReturn(new UserDAO());
         //when
